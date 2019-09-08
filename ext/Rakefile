@@ -1,11 +1,20 @@
 require File.expand_path('../../lib/rdkafka/version', __FILE__)
 require "fileutils"
 
-task :default => :clean do  
-  lib_path = File.join('/','usr','lib','librdkafka.so.1')
-  FileUtils.cp(lib_path, File.join(File.dirname(__FILE__), "librdkafka.so"))
+task :default => :clean do
+  mac_os = (/darwin/ =~ RUBY_PLATFORM) != nil
+  if mac_os
+    ENV["CPPFLAGS"] = "-I/usr/local/opt/openssl/include"
+    ENV["LDFLAGS"] = "-L/usr/local/opt/openssl/lib"
+    lib_path = File.join('/','usr','local','opt','librdkafka','lib','librdkafka.1.dylib')
+    FileUtils.cp(lib_path, File.join(File.dirname(__FILE__), "librdkafka.dylib"))
+  else
+    lib_path = File.join('/','usr','lib','librdkafka.so.1')
+    FileUtils.cp(lib_path, File.join(File.dirname(__FILE__), "librdkafka.so"))
+  end
 end
 
 task :clean do
   FileUtils.rm_f File.join(File.dirname(__FILE__), "librdkafka.so")
+  FileUtils.rm_f File.join(File.dirname(__FILE__), "librdkafka.dylib")  
 end
