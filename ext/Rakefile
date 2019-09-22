@@ -9,7 +9,7 @@ task :default => :clean do
     lib_path = File.join('/','usr','local','opt','librdkafka','lib','librdkafka.1.dylib')
     FileUtils.cp(lib_path, File.join(File.dirname(__FILE__), "librdkafka.dylib"))
   else
-    lib_path = File.join('/','usr','lib','librdkafka.so.1')
+    lib_path = File.join('/','usr','local','lib','librdkafka.so.1')
     FileUtils.cp(lib_path, File.join(File.dirname(__FILE__), "librdkafka.so"))
   end
 end
